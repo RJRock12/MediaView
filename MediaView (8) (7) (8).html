@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+
+  <head>
+    <meta charset="UTF-8" />
+    <style id="webmakerstyle">
+      input[type="text"] {
+        font-family: monospace;
+        border: none;
+        width: 40px;
+      }
+
+      input[type="text"] {
+        transition: all 0.25s ease-in;
+      }
+
+      input[type="text"]:focus {
+        width: 180px;
+      }
+
+      input[type='range'] {
+        -webkit-appearance: none;
+        width: calc(100% - var(--player-button-width));
+        height: .5em;
+        background-color: grey;
+      }
+
+      p {
+        font-family: monospace;
+        color: white;
+        display: inline
+      }
+
+      button {
+        background-color: black;
+        color: white;
+        font-family: monospace
+      }
+
+      body {
+        font-family: monospace;
+      }
+
+    </style>
+  </head>
+
+  <body style='background-color:black;font-family:monospace'>
+
+    <title>Player</title>
+
+    <br>
+    <label style='color:white;background-color:black;cursor:pointer'>
+      <input type='file' id='input' style='display:none' accept='audio/*,video/*' multiple>Upload File(s)
+    </label><br>
+
+<label style='color:white;background-color:black;cursor:pointer'>
+      <input type='file' id='imgInput' style='display:none' accept='image/*' multiple>Upload Image(s)
+</label><br>
+    <input type='checkbox' style="background-color:black, border-color:white" id='check'>
+    <p>Check to enable hover toggle.
+    </p><br>
+    <input type='checkbox' style="background-color:black, border-color:white" id='loop'>
+    <p>Check to loop, not checked autoplay.
+    </p><br>
+    <input type='checkbox' style="background-color:black, border-color:white" id='stop'>
+    <p>Check to stop loop/autoplay.
+    </p><br><br>
+    <button id='hidegap' onclick="hideGap()">Video/Audio Toggle</button>
+    <br>
+
+<button id="toggleImg" onclick="toggleImgMode()">Toggle Image Mode</button><br>
+
+    <video width="480" height="270" src='' id='audio' onended='nextup()' style='display:none'>
+    </video>
+    <br>
+    <div style='display:absolute;position:sticky;background-color:black;top:0px;left:0px'>
+      <br>
+      <button onclick='toggle()' id='pp'>&#9658;</button>
+      <input id='s' type="range" class="timeline" max="100" value="0">
+      <span style='color:white'> | Vol:</span><input id='v' type="range" class="timeline" max="100" value="100">
+      <p id='time'>
+      </p>
+      <br>
+      <button onclick='prev()' id='prev'>&#60;--</button>
+      <button onclick='skip(-15)' id='skipb'>&#60;</button>
+      <p id='current' style='color:white;display:inline;'>
+      </p>
+      <button onclick='skip(5)' id='skipf'>&#62;</button>
+      <button onclick='next()' id='next'>--&#62;</button>
+      <button id='mix' onclick='mixa()'>Mix</button>
+      <br>
+      <input type='text' value='1.0' id='speedInpt'>
+      <button id='setSpd' onclick='document.getElementById("audio").playbackRate=document.getElementById("speedInpt").value'>
+        Set Speed
+      </button>
+      <p>
+        |
+      </p>
+      <input type='text' value='0' id='timeInpt'>
+      <button id='setTme' nclick='document.getElementById("audio").currentTime=document.getElementById("timeInpt").value'>
+        Set Time
+      </button>
+
+
+      <br><br>
+    </div>
+    <p style='display:inline-block'>
+      Search:
+    </p>
+    <input type='text' id='search' onkeyup='search()'>
+    <p id='searchContain'>
+
+    </p>
+    <p id='list' style='color:white;font-family:monospace'>
+    </p>
+    <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br>
+    <br><br><br><br><br><br>
+    <script>
+      const inputElement = document.getElementById("input");
+      inputElement.addEventListener("change", handleFile, false);
+      current = 0;
+      mix = false;
+      ac = 0;
+
+
+      const btns = document.querySelectorAll("button,input[type=checkbox]")
+
+      btns.forEach(btn => {
+
+        btn.addEventListener('mouseover', event => {
+          aclick(event.target.id);
+        });
+        btn.addEventListener('mouseout', event => {
+          release(event.target.id);
+        });
+
+      });
+
+      function aclick(id) {
+        console.log(id)
+        if (document.getElementById('check').checked) {
+          detect = setInterval(function() {
+            ac++;
+            document.getElementById(id).style.backgroundColor = 'rgb(' + ac + ',' + ac + ',' + ac + ')';
+            if (ac > 120) {
+              document.getElementById(id).style.color = 'black';
+            }
+            if (ac > 235) {
+              document.getElementById(id).click();
+              document.getElementById(id).style.backgroundColor = 'yellow';
+              clearInterval(detect);
+
+            }
+          }, 5)
+        };
+      };
+
+      function release(id) {
+        ac = 0;
+        if (typeof detect != 'undefined') {
+          clearInterval(detect);
+        }
+        document.getElementById(id).style.backgroundColor = 'black';
+        document.getElementById(id).style.color = 'white';
+        document.getElementById(id).style.borderColor = '';
+      }
+
+      function search() {
+
+        for (i = 0; i < document.getElementById('input').files.length; i++) {
+
+          if (document.getElementById('l' + i).innerHTML.toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
+            document.getElementById('l' + i).style.display = 'inline-block';
+            document.getElementById('b' + i).style.display = 'inline-block';
+            document.getElementById('p' + i).style.display = 'inline-block';
+
+          } else {
+
+            document.getElementById('l' + i).style.display = 'none';
+            document.getElementById('b' + i).style.display = 'none';
+            document.getElementById('p' + i).style.display = 'none';
+
+          }
+
+        }
+
+      }
+
+      function handleFile() {
+        current = 0;
+        document.getElementById('search').value = '';
+        handleFiles();
+      }
+
+      function nextup() {
+        if (document.getElementById('loop').checked && (!document.getElementById('stop').checked)) {
+          handleFiles();
+        } else {
+          if ((!document.getElementById('stop').checked)) {
+            next()
+          } else {
+            document.getElementById('audio').pause();
+            document.getElementById('pp').innerHTML = '&#9658';
+          }
+
+        }
+      };
+
+      function toggle() {
+        if (document.getElementById('audio').paused) {
+          if (document.getElementById('audio').currentTime == document.getElementById('audio').duration && document.getElementById('stop').checked) {
+            document.getElementById('audio').currentTime = 0;
+          }
+          document.getElementById('audio').play();
+          document.getElementById('pp').innerHTML = 'ǁ';
+
+        } else {
+          document.getElementById('audio').pause();
+          document.getElementById('pp').innerHTML = '&#9658';
+        }
+      };
+
+      function change() {
+        const per = (100 * document.getElementById('audio').currentTime) / document.getElementById('audio').duration;
+        document.getElementById('s').style.backgroundSize = `${per}% 100%`;
+        document.getElementById('s').value = per;
+        document.getElementById('time').innerHTML = '| ' + Math.floor(document.getElementById('audio').currentTime) + '/' + Math.floor(document.getElementById('audio').duration) + 'sec | ' + Math.floor(per) + '% | ' + Math.floor(Math.floor(document.getElementById('audio').duration / 60)) + 'min, ' + Math.floor(document.getElementById('audio').duration % 60) + 'sec';
+        document.getElementById('audio').volume = document.getElementById('v').value / 100;
+      }
+
+      document.getElementById('audio').ontimeupdate = change;
+
+      function changeSeek() {
+        const time = (document.getElementById('s').value * document.getElementById('audio').duration) / 100;
+        document.getElementById('audio').currentTime = time;
+      }
+
+      function skip(a) {
+        document.getElementById('audio').currentTime = document.getElementById('audio').currentTime + a;
+      };
+      document.getElementById('s').addEventListener('change', changeSeek);
+
+      function test(e) {
+        current = e;
+
+        handleFiles();
+      };
+
+      function time(f) {
+        var _size = f.size;
+        var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+          i = 0;
+        while (_size > 900) {
+          _size /= 1024;
+          i++;
+        }
+        var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
+        return exactSize;
+      }
+
+      function handleFiles() {
+
+        const fileList = document.getElementById('input').files;
+        const numFiles = fileList.length;
+
+        document.getElementById('list').innerHTML = '';
+        for (i = 0; i < numFiles; i++) {
+          if (i == current) {
+            br = document.createElement('br');
+            br.id = 'b' + i;
+            document.getElementById('list').appendChild(br);
+            button = document.createElement('button');
+            button.style = 'border:none;background-color:black;color:yellow;font-family:monospace'
+            button.id = 'l' + i;
+            button.onclick = function() {
+              test(this.id.splice(1, this.id.length))
+            }
+            button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
+            p = document.createElement('p');
+            p.innerHTML = '#'
+            p.id = 'p' + i;
+            document.getElementById('list').appendChild(p);
+            document.getElementById('list').appendChild(button);
+          } else {
+            br = document.createElement('br');
+            br.id = 'b' + i;
+            document.getElementById('list').appendChild(br);
+            button = document.createElement('button');
+            button.style = 'border:none;background-color:black;color:white;font-family:monospace'
+            button.id = 'l' + i;
+            button.onclick = function() {
+              test(this.id.slice(1, this.id.length))
+            }
+            button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
+            p = document.createElement('p');
+            p.innerHTML = '#'
+            p.id = 'p' + i;
+            document.getElementById('list').appendChild(p);
+            document.getElementById('list').appendChild(button);
+          };
+
+        };
+        search();
+        if ((current + 1) == numFiles) {
+          document.getElementById('next').disabled = true;
+        } else {
+          document.getElementById('next').disabled = false;
+        };
+        if (current == 0) {
+          document.getElementById('prev').disabled = true;
+        } else {
+          document.getElementById('prev').disabled = false;
+        };
+        document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
+        document.getElementById('current').innerHTML = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+
+        document.title = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+        document.getElementById('audio').play();
+        document.getElementById('pp').innerHTML = 'ǁ';
+        if (current > numFiles) {
+          current = 0;
+          handleFiles()
+        }
+      }
+
+      function next() {
+        document.getElementById('audio').src = '';
+        if (mix) {
+          current = Math.floor(Math.random() * (document.getElementById('input').files.length + 1));
+        } else {
+          current += 1;
+        }
+        handleFiles();
+
+      }
+
+      function prev() {
+        document.getElementById('audio').src = '';
+        current -= 1;
+        handleFiles();
+      }
+
+      function mixa() {
+        if (!mix) {
+          mix = true;
+          document.getElementById('mix').style.color = 'yellow';
+        } else {
+          mix = false;
+          document.getElementById('mix').style.color = 'white';
+        }
+      }
+
+      function hideGap() {
+        var x = document.getElementById("audio");
+        if (x.style.display === "none") {
+          x.style.display = "block";
+        } else {
+          x.style.display = "none";
+        }
+      }
+   document.getElementById('imgInput').addEventListener('change', function() {
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.onloadend = function() {
+    var img = document.createElement('img');
+    img.src = reader.result;
+    img.style.display = 'block';
+    img.width = 480;
+    img.height = 270;
+    document.body.appendChild(img);
+  }
+  if (file) {
+    reader.readAsDataURL(file);
+  } else {
+    // Handle error
+  }
+});
+   let imgMode = false;
+
+function toggleImgMode() {
+  imgMode = !imgMode;
+  var img = document.getElementsByTagName("img")[0];
+  if(imgMode) {
+    img.style.display = "block";
+  } else {
+    img.style.display = "none";
+  }
+}
+
+
+    </script>
+
+  </body>
+
+
+<script src="filesystem:https://webmaker.app/temporary/script.js">
+</script>
+</body>
+</html>
+
+<script src="filesystem:https://webmaker.app/temporary/script.js">
+</script>
+</body>
+</html>

@@ -1,7 +1,9 @@
 # MediaView
 Minimalistic, robust media player using HTML, JS, and CSS. Compatible with all common types of audio and video files.
 <br>View the <a href="https://github.com/RJRock12/MediaView/wiki">Wiki page</a> for more details.<br>
-**Credit to <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> for most of the code.**
+**Credit to <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> for most of the code.**<br>
+<br>
+Please use a modern browser with HTML 5 support for all features to work intended.<br>
 <br><br>
 CHANGELOG:<br>
 <br>

@@ -5,6 +5,9 @@ Minimalistic, robust media player using purely web based programming languages. 
 <br>
 Please use a modern browser with HTML 5 support for all features to work intended.<br>
 <br><br>
+TODO: <br>
+- shortcut alt+space -> alt+q
+<br><br>
 CHANGELOG:<br>
 <br>
 **Note: All versions as far back as 1.1 are included in the archive, but are not listed here. Versions before 8.6 may be unstable or broken altogether.**<br><br>

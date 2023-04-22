@@ -1,1 +1,1 @@
-To contribute, please download a copy of the MediaView file and edit using a editor like VScode. The code is coded in HTML, JS, and CSS. Submit to the issues tab if it is fixing an issue, or directly if a feature. Thanks!
+To contribute, please download a copy of the MediaView file and edit using an editor like VScode. The code is coded in HTML, JS, and CSS. Submit to the issues tab if it is fixing an issue, or directly if a feature. Thanks!

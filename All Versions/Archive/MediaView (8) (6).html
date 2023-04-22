@@ -119,9 +119,9 @@
         for (i = 0; i < document.getElementById('input').files.length; i++) {
 				
           if (document.getElementById('l' + i).innerHTML.toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
-            document.getElementById('l' + i).style.display = 'inline-block';
-						document.getElementById('b' + i).style.display = 'inline-block';
-						document.getElementById('p' + i).style.display = 'inline-block';
+            document.getElementById('l' + i).style.display = 'block';
+						document.getElementById('l' + i).style.display = 'block';
+						document.getElementById('l' + i).style.display = 'block';
 						
           } else {
 					
@@ -137,7 +137,6 @@
 
       function handleFile() {
         current = 0;
-				document.getElementById('search').value = '';
         handleFiles();
       }
 
@@ -191,7 +190,6 @@
 
       function test(e) {
         current = e;
-				
         handleFiles();
       };
 
@@ -211,8 +209,7 @@
 
         const fileList = document.getElementById('input').files;
         const numFiles = fileList.length;
-        
-				document.getElementById('list').innerHTML = '';
+        document.getElementById('list').innerHTML = '';
         for (i = 0; i < numFiles; i++) {
           if (i == current) {
 						br = document.createElement('br');
@@ -222,7 +219,7 @@
             button.style = 'border:none;background-color:black;color:yellow;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
-              test(this.id.splice(1, this.id.length))
+              test(this.id.splice(1, 2))
             }
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
@@ -238,7 +235,7 @@
             button.style = 'border:none;background-color:black;color:white;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
-              test(this.id.slice(1, this.id.length))
+              test(this.id.slice(1, 2))
             }
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
@@ -247,9 +244,7 @@
             document.getElementById('list').appendChild(p);
             document.getElementById('list').appendChild(button);
           };
-					
         };
-				search();
         if ((current + 1) == numFiles) {
           document.getElementById('next').disabled = true;
         } else {

@@ -119,9 +119,9 @@
         for (i = 0; i < document.getElementById('input').files.length; i++) {
 				
           if (document.getElementById('l' + i).innerHTML.toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
-            document.getElementById('l' + i).style.display = 'inline-block';
-						document.getElementById('b' + i).style.display = 'inline-block';
-						document.getElementById('p' + i).style.display = 'inline-block';
+            document.getElementById('l' + i).style.display = 'block';
+						document.getElementById('b' + i).style.display = 'block';
+						document.getElementById('p' + i).style.display = 'block';
 						
           } else {
 					
@@ -137,7 +137,6 @@
 
       function handleFile() {
         current = 0;
-				document.getElementById('search').value = '';
         handleFiles();
       }
 
@@ -191,7 +190,7 @@
 
       function test(e) {
         current = e;
-				
+				console.log(e)
         handleFiles();
       };
 
@@ -212,6 +211,7 @@
         const fileList = document.getElementById('input').files;
         const numFiles = fileList.length;
         
+				if(document.getElementById('search').value == ''){
 				document.getElementById('list').innerHTML = '';
         for (i = 0; i < numFiles; i++) {
           if (i == current) {
@@ -249,7 +249,7 @@
           };
 					
         };
-				search();
+				};
         if ((current + 1) == numFiles) {
           document.getElementById('next').disabled = true;
         } else {

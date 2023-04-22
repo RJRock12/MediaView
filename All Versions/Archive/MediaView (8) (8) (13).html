@@ -4,18 +4,17 @@
   <head>
     <meta charset="UTF-8" />
     <style id="webmakerstyle">
+      input[type='text']:focus {
+
+        width: 180px;
+      }
+
       input[type="text"] {
+        z-index: 9999 !important;
+        transition: all 0.25s ease-in;
         font-family: monospace;
         border: none;
         width: 40px;
-      }
-
-      input[type="text"] {
-        transition: all 0.25s ease-in;
-      }
-
-      input[type="text"]:focus {
-        width: 180px;
       }
 
       input[type='range'] {
@@ -80,20 +79,20 @@
       </p>
       <button onclick='skip(5)'>&#62;</button>
       <button onclick='next()' id='next'>--&#62;</button>
-			<button id='mix' onclick='mixa()'>Mix</button>
+      <button id='mix' onclick='mixa()'>Shuffle</button>
       <br>
       <input type='text' value='1.0' id='speedInpt'>
       <button onclick='document.getElementById("audio").playbackRate=document.getElementById("speedInpt").value'>
         Set Speed
       </button>
-			<p>
-			 | 
-			</p>
-			<input type='text' value='0' id='timeInpt'>
+      <p>
+        |
+      </p>
+      <input type='text' value='0' id='timeInpt'>
       <button onclick='document.getElementById("audio").currentTime=document.getElementById("timeInpt").value'>
         Set Time
       </button>
-      
+
 
       <br><br>
     </div>
@@ -101,9 +100,19 @@
       Search:
     </p>
     <input type='text' id='search' onkeyup='search()'>
-    <p id='searchContain'>
+    <br>
+    <button onclick='pinned = [];pin(-1)'>
+      Unpin All
+    </button>
+    <p> | </p>
+    <button onclick='pinned = []; [...Array(document.getElementById("input").files.length).keys()].forEach(x => pinned.push(String(x)));pin(-1)'>
+      Pin All
+    </button>
+    <br>
+    <p id='pin' style='color:white;font-family:monospace'>
 
     </p>
+    <hr>
     <p id='list' style='color:white;font-family:monospace'>
     </p>
     <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br>
@@ -113,32 +122,52 @@
       inputElement.addEventListener("change", handleFile, false);
       current = 0;
       mix = false;
+      pinned = [];
+      fileList = [];
+      for (let i of document.querySelectorAll('input[type="text"]')) {
+        i.addEventListener('keydown', function(e) {
+          fixInputs(e.key, this.id);
+        })
+      }
+
+      function fixInputs(key, id) {
+        console.log(key)
+        if ((' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890`~!@#$%^&*()-_=+[]{};:\'",<.>/?\\|'.split('')).includes(key)) {
+          document.getElementById(id).value += key;
+        } else if (key == 'Backspace') {
+          document.getElementById(id).value = document.getElementById(id).value.slice(0, document.getElementById(id).value.length - 1)
+        } else if (key == 'Control') {
+          document.getElementById(id).value = '';
+        }
+      }
 
       function search() {
-			
         for (i = 0; i < document.getElementById('input').files.length; i++) {
-				
+
           if (document.getElementById('l' + i).innerHTML.toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
             document.getElementById('l' + i).style.display = 'inline-block';
-						document.getElementById('b' + i).style.display = 'inline-block';
-						document.getElementById('p' + i).style.display = 'inline-block';
-						
+            document.getElementById('b' + i).style.display = 'inline-block';
+            document.getElementById('p' + i).style.display = 'inline-block';
+            document.getElementById('i' + i).style.display = 'inline-block';
+
           } else {
-					
+
             document.getElementById('l' + i).style.display = 'none';
-						document.getElementById('b' + i).style.display = 'none';
-						document.getElementById('p' + i).style.display = 'none';
-						
+            document.getElementById('b' + i).style.display = 'none';
+            document.getElementById('p' + i).style.display = 'none';
+            document.getElementById('i' + i).style.display = 'none';
+
           }
-         
+
         }
 
       }
 
       function handleFile() {
         current = 0;
-				document.getElementById('search').value = '';
+        document.getElementById('search').value = '';
         handleFiles();
+        pinned = [];
       }
 
       function nextup() {
@@ -175,6 +204,11 @@
         document.getElementById('s').value = per;
         document.getElementById('time').innerHTML = '| ' + Math.floor(document.getElementById('audio').currentTime) + '/' + Math.floor(document.getElementById('audio').duration) + 'sec | ' + Math.floor(per) + '% | ' + Math.floor(Math.floor(document.getElementById('audio').duration / 60)) + 'min, ' + Math.floor(document.getElementById('audio').duration % 60) + 'sec';
         document.getElementById('audio').volume = document.getElementById('v').value / 100;
+        if(document.getElementById('audio').paused){
+            document.getElementById('pp').innerHTML = '&#9658';
+        }else{
+            document.getElementById('pp').innerHTML = 'ǁ';
+        }
       }
 
       document.getElementById('audio').ontimeupdate = change;
@@ -191,7 +225,7 @@
 
       function test(e) {
         current = e;
-				
+
         handleFiles();
       };
 
@@ -203,20 +237,35 @@
           _size /= 1024;
           i++;
         }
-        var exactSize = (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
-        return exactSize;
+        return (Math.round(_size * 100) / 100) + ' ' + fSExt[i];
+      }
+
+      function pin(id) {
+        if(id != -1){
+        if (pinned.includes(id)) {
+          pinned.splice(pinned.indexOf(id), 1);
+        } else {
+          pinned.push(id);
+        }}
+        s = audio.currentTime;
+        pinp = document.getElementById('audio').paused
+        handleFiles();
+        audio.currentTime = s;
+        if (pinp) {
+          toggle();
+        }
       }
 
       function handleFiles() {
 
         const fileList = document.getElementById('input').files;
         const numFiles = fileList.length;
-        
-				document.getElementById('list').innerHTML = '';
+        document.getElementById('pin').innerHTML = '';
+        document.getElementById('list').innerHTML = '';
         for (i = 0; i < numFiles; i++) {
           if (i == current) {
-						br = document.createElement('br');
-						br.id = 'b'+i;
+            br = document.createElement('br');
+            br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
             button = document.createElement('button');
             button.style = 'border:none;background-color:black;color:yellow;font-family:monospace'
@@ -227,14 +276,24 @@
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
             p.innerHTML = '#'
-						p.id = 'p'+i;
-            document.getElementById('list').appendChild(p);
-            document.getElementById('list').appendChild(button);
+            p.id = 'p' + i;
+            ipin = document.createElement('button');
+            ipin.id = 'i' + i;
+            ipin.style = 'border:none;background-color:black;color:grey;font-family:monospace'
+            ipin.innerHTML = pinned.includes(String(i)) ? ' | Unpin' : ' | Pin'
+            ipin.onclick = function() {
+              pin(this.id.slice(1, this.id.length));
+            }
+            append = pinned.includes(String(i)) ? 'pin' : 'list';
+            document.getElementById(append).appendChild(p);
+            document.getElementById(append).appendChild(button);
+            document.getElementById(append).appendChild(ipin);
+            document.getElementById(append).appendChild(br);
           } else {
             br = document.createElement('br');
-						br.id = 'b'+i;
+            br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
-						button = document.createElement('button');
+            button = document.createElement('button');
             button.style = 'border:none;background-color:black;color:white;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
@@ -243,13 +302,24 @@
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
             p.innerHTML = '#'
-						p.id = 'p'+i;
-            document.getElementById('list').appendChild(p);
-            document.getElementById('list').appendChild(button);
+            p.id = 'p' + i;
+            ipin = document.createElement('button');
+            ipin.id = 'i' + i;
+            ipin.style = 'border:none;background-color:black;color:grey;font-family:monospace'
+            ipin.innerHTML = pinned.includes(String(i)) ? ' | Unpin' : ' | Pin'
+            ipin.onclick = function() {
+              pin(this.id.slice(1, this.id.length));
+            }
+            append = pinned.includes(String(i)) ? 'pin' : 'list';
+            document.getElementById(append).appendChild(p);
+            document.getElementById(append).appendChild(button);
+            document.getElementById(append).appendChild(ipin);
+            document.getElementById(append).appendChild(br);
           };
-					
+
         };
-				search();
+
+        search();
         if ((current + 1) == numFiles) {
           document.getElementById('next').disabled = true;
         } else {
@@ -261,9 +331,9 @@
           document.getElementById('prev').disabled = false;
         };
         document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
-        document.getElementById('current').innerHTML = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+        document.getElementById('current').innerHTML = (parseFloat(current) + 1) + '/' + numFiles + ': ' + fileList[current].name;
 
-        document.title = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+        document.title = (parseFloat(current) + 1) + '/' + numFiles + ': ' + fileList[current].name;
         document.getElementById('audio').play();
         document.getElementById('pp').innerHTML = 'ǁ';
         if (current > numFiles) {
@@ -274,8 +344,15 @@
 
       function next() {
         document.getElementById('audio').src = '';
+        c = current;
         if (mix) {
-          current = Math.floor(Math.random() * (document.getElementById('input').files.length + 1));
+          while (c == current) {
+            if (pinned.length == 0) {
+              current = Math.floor(Math.random() * (document.getElementById('input').files.length + 1));
+            } else {
+              current = pinned[Math.floor(Math.random() * (pinned.length))]
+            }
+          }
         } else {
           current += 1;
         }
@@ -305,6 +382,19 @@
           x.style.display = "block";
         } else {
           x.style.display = "none";
+        }
+      }
+      window.onkeydown = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key == ' ' && document.activeElement != document.getElementById('search')) {
+          document.getElementById('pp').click();
+
+        } else if (e.key == 'ArrowRight') {
+          document.getElementById('next').click();
+
+        } else if (e.key == 'ArrowLeft') {
+          document.getElementById('prev').click();
         }
       }
       window.onscroll = function(ev) {

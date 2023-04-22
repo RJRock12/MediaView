@@ -263,7 +263,7 @@
         document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
         document.getElementById('current').innerHTML = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
 
-        document.title = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+        document.title = (Number(current) + 1) + '/' + numFiles + ': ' + fileList[current].name;
         document.getElementById('audio').play();
         document.getElementById('pp').innerHTML = 'ǁ';
         if (current > numFiles) {

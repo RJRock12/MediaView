@@ -53,7 +53,7 @@
       <input type='file' id='input' style='display:none' accept='audio/*,video/*' multiple>Upload File(s)
     </label><br>
     <input type='checkbox' id='check'>
-    <p>Check to enable scroll toggle.
+    <p>Check to enable hoveer toggle.
     </p><br>
     <input type='checkbox' id='loop'>
     <p>Check to loop, not checked autoplay.
@@ -61,7 +61,7 @@
     <input type='checkbox' id='stop'>
     <p>Check to stop loop/autoplay.
     </p><br><br>
-    <button onclick="hideGap()">Video/Audio Toggle</button>
+    <button id='hidegap' onclick="hideGap()">Video/Audio Toggle</button>
     <br>
     <video width="480" height="270" src='' id='audio' onended='nextup()' style='display:none'>
     </video>
@@ -75,25 +75,25 @@
       </p>
       <br>
       <button onclick='prev()' id='prev'>&#60;--</button>
-      <button onclick='skip(-15)'>&#60;</button>
+      <button onclick='skip(-15)' id='skipb'>&#60;</button>
       <p id='current' style='color:white;display:inline;'>
       </p>
-      <button onclick='skip(5)'>&#62;</button>
+      <button onclick='skip(5)' id='skipf'>&#62;</button>
       <button onclick='next()' id='next'>--&#62;</button>
-			<button id='mix' onclick='mixa()'>Mix</button>
+      <button id='mix' onclick='mixa()'>Mix</button>
       <br>
       <input type='text' value='1.0' id='speedInpt'>
-      <button onclick='document.getElementById("audio").playbackRate=document.getElementById("speedInpt").value'>
+      <button id='setSpd' onclick='document.getElementById("audio").playbackRate=document.getElementById("speedInpt").value'>
         Set Speed
       </button>
-			<p>
-			 | 
-			</p>
-			<input type='text' value='0' id='timeInpt'>
-      <button onclick='document.getElementById("audio").currentTime=document.getElementById("timeInpt").value'>
+      <p>
+        |
+      </p>
+      <input type='text' value='0' id='timeInpt'>
+      <button id='setTme' nclick='document.getElementById("audio").currentTime=document.getElementById("timeInpt").value'>
         Set Time
       </button>
-      
+
 
       <br><br>
     </div>
@@ -113,31 +113,75 @@
       inputElement.addEventListener("change", handleFile, false);
       current = 0;
       mix = false;
+      ac = 0;
+
+
+      const btns = document.querySelectorAll('button')
+
+      btns.forEach(btn => {
+
+        btn.addEventListener('mouseover', event => {
+          aclick(event.target.id);
+        });
+        btn.addEventListener('mouseout', event => {
+          release(event.target.id);
+        });
+
+      });
+
+      function aclick(id) {
+        console.log(id)
+        if (document.getElementById('check').checked) {
+          detect = setInterval(function() {
+            ac++;
+            document.getElementById(id).style.backgroundColor = 'rgb(' + ac + ',' + ac + ',' + ac + ')';
+            if (ac > 120) {
+              document.getElementById(id).style.color = 'black';
+            }
+            if (ac > 235) {
+              document.getElementById(id).click();
+              document.getElementById(id).style.backgroundColor = 'yellow';
+              clearInterval(detect);
+
+            }
+          }, 5)
+        };
+      };
+
+      function release(id) {
+        ac = 0;
+        if (typeof detect != 'undefined') {
+          clearInterval(detect);
+        }
+        document.getElementById(id).style.backgroundColor = 'black';
+        document.getElementById(id).style.color = 'white';
+        document.getElementById(id).style.borderColor = '';
+      }
 
       function search() {
-			
+
         for (i = 0; i < document.getElementById('input').files.length; i++) {
-				
+
           if (document.getElementById('l' + i).innerHTML.toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
             document.getElementById('l' + i).style.display = 'inline-block';
-						document.getElementById('b' + i).style.display = 'inline-block';
-						document.getElementById('p' + i).style.display = 'inline-block';
-						
+            document.getElementById('b' + i).style.display = 'inline-block';
+            document.getElementById('p' + i).style.display = 'inline-block';
+
           } else {
-					
+
             document.getElementById('l' + i).style.display = 'none';
-						document.getElementById('b' + i).style.display = 'none';
-						document.getElementById('p' + i).style.display = 'none';
-						
+            document.getElementById('b' + i).style.display = 'none';
+            document.getElementById('p' + i).style.display = 'none';
+
           }
-         
+
         }
 
       }
 
       function handleFile() {
         current = 0;
-				document.getElementById('search').value = '';
+        document.getElementById('search').value = '';
         handleFiles();
       }
 
@@ -191,7 +235,7 @@
 
       function test(e) {
         current = e;
-				
+
         handleFiles();
       };
 
@@ -211,12 +255,12 @@
 
         const fileList = document.getElementById('input').files;
         const numFiles = fileList.length;
-        
-				document.getElementById('list').innerHTML = '';
+
+        document.getElementById('list').innerHTML = '';
         for (i = 0; i < numFiles; i++) {
           if (i == current) {
-						br = document.createElement('br');
-						br.id = 'b'+i;
+            br = document.createElement('br');
+            br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
             button = document.createElement('button');
             button.style = 'border:none;background-color:black;color:yellow;font-family:monospace'
@@ -227,14 +271,14 @@
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
             p.innerHTML = '#'
-						p.id = 'p'+i;
+            p.id = 'p' + i;
             document.getElementById('list').appendChild(p);
             document.getElementById('list').appendChild(button);
           } else {
             br = document.createElement('br');
-						br.id = 'b'+i;
+            br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
-						button = document.createElement('button');
+            button = document.createElement('button');
             button.style = 'border:none;background-color:black;color:white;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
@@ -243,13 +287,13 @@
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
             p.innerHTML = '#'
-						p.id = 'p'+i;
+            p.id = 'p' + i;
             document.getElementById('list').appendChild(p);
             document.getElementById('list').appendChild(button);
           };
-					
+
         };
-				search();
+        search();
         if ((current + 1) == numFiles) {
           document.getElementById('next').disabled = true;
         } else {
@@ -307,26 +351,7 @@
           x.style.display = "none";
         }
       }
-      window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-          if (document.getElementById('check').checked) {
-            if (document.getElementById('audio').paused) {
-              document.getElementById('audio').play();
-              document.getElementById('pp').innerHTML = 'ǁ';
-
-            } else {
-              document.getElementById('audio').pause();
-              document.getElementById('pp').innerHTML = '&#9658';
-
-
-            }
-            window.scrollTo(0, 0);
-            window.scrollTo(0, 0);
-            window.scrollTo(0, 0);
-            window.scrollTo(0, 0);
-          }
-        }
-      };
+      
 
     </script>
 

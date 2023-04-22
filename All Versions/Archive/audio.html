@@ -1,0 +1,55 @@
+<body style='background-color:black'>
+
+  <p style='color:white'>
+
+    Choose file to play: </p><br><br><input type='file' id='input' multiple><br>
+  
+  <audio controls src='' id='audio'></audio><br>
+  <button onclick='prev()' id='prev'>&#60;</button>
+      <p id='current' style='color:white;display:inline;'>
+      </p>
+      <button onclick='next()' id='next'>&#62;</button>
+      <p id='list' style='color:white'>
+
+  </p>
+      <script>
+        const inputElement = document.getElementById("input");
+        inputElement.addEventListener("change", handleFiles, false);
+        current = 0;
+
+        function handleFiles() {
+
+          const fileList = document.getElementById('input').files;
+          const numFiles = fileList.length;
+          document.getElementById('list').innerHTML='';
+					for(i=0;i<numFiles;i++){
+          document.getElementById('list').innerHTML+='<br>#'+i+': '+fileList[i].name;
+          };
+          if ((current + 1) == numFiles) {
+            document.getElementById('next').disabled = true;
+          } else {
+            document.getElementById('next').disabled = false;
+          };
+          if (current == 0) {
+            document.getElementById('prev').disabled = true;
+          } else {
+            document.getElementById('prev').disabled = false;
+          };
+          document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
+        document.getElementById('current').innerHTML=current+1+'/'+numFiles+': '+fileList[current].name;
+        }
+
+        function next() {
+          document.getElementById('audio').src = '';
+          current += 1;
+          handleFiles();
+        }
+
+        function prev() {
+          document.getElementById('audio').src = '';
+          current -= 1;
+          handleFiles();
+        }
+
+      </script>
+</body>

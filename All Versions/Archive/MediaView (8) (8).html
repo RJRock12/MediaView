@@ -80,20 +80,20 @@
       </p>
       <button onclick='skip(5)'>&#62;</button>
       <button onclick='next()' id='next'>--&#62;</button>
-			<button id='mix' onclick='mixa()'>Mix</button>
+      <button id='mix' onclick='mixa()'>Shuffle</button>
       <br>
       <input type='text' value='1.0' id='speedInpt'>
       <button onclick='document.getElementById("audio").playbackRate=document.getElementById("speedInpt").value'>
         Set Speed
       </button>
-			<p>
-			 | 
-			</p>
-			<input type='text' value='0' id='timeInpt'>
+      <p>
+        |
+      </p>
+      <input type='text' value='0' id='timeInpt'>
       <button onclick='document.getElementById("audio").currentTime=document.getElementById("timeInpt").value'>
         Set Time
       </button>
-      
+
 
       <br><br>
     </div>
@@ -104,7 +104,10 @@
     <p id='searchContain'>
 
     </p>
-    <p id='list' style='color:white;font-family:monospace'>
+		<br>
+    <p id='pin' style='color:white;font-family:monospace'>
+		<hr>
+		<p id='list' style='color:white;font-family:monospace'>
     </p>
     <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br>
     <br><br><br><br><br><br>
@@ -113,32 +116,35 @@
       inputElement.addEventListener("change", handleFile, false);
       current = 0;
       mix = false;
-
-      function search() {
+      pinned = [];
+			fileList = [];
 			
+      function search() {
+
         for (i = 0; i < document.getElementById('input').files.length; i++) {
-				
+
           if (document.getElementById('l' + i).innerHTML.toLowerCase().includes(document.getElementById('search').value.toLowerCase())) {
             document.getElementById('l' + i).style.display = 'inline-block';
-						document.getElementById('b' + i).style.display = 'inline-block';
-						document.getElementById('p' + i).style.display = 'inline-block';
-						
+            document.getElementById('b' + i).style.display = 'inline-block';
+            document.getElementById('p' + i).style.display = 'inline-block';
+
           } else {
-					
+
             document.getElementById('l' + i).style.display = 'none';
-						document.getElementById('b' + i).style.display = 'none';
-						document.getElementById('p' + i).style.display = 'none';
-						
+            document.getElementById('b' + i).style.display = 'none';
+            document.getElementById('p' + i).style.display = 'none';
+
           }
-         
+
         }
 
       }
 
       function handleFile() {
         current = 0;
-				document.getElementById('search').value = '';
+        document.getElementById('search').value = '';
         handleFiles();
+        pinned = [];
       }
 
       function nextup() {
@@ -191,7 +197,7 @@
 
       function test(e) {
         current = e;
-				
+
         handleFiles();
       };
 
@@ -207,16 +213,27 @@
         return exactSize;
       }
 
-      function handleFiles() {
+      function pin(id) {
+        if (pinned.includes(id)) {
+					pinned.splice(pinned.indexOf(id),1);
+        } else {
+          pinned.push(id);
+        }
+				s = audio.currentTime;
+				handleFiles();
+				audio.currentTime = s;
+      }
+
+     function handleFiles() {
 
         const fileList = document.getElementById('input').files;
         const numFiles = fileList.length;
-        
+				document.getElementById('pin').innerHTML = '';
 				document.getElementById('list').innerHTML = '';
-        for (i = 0; i < numFiles; i++) {
+         for (i = 0; i < numFiles; i++) {
           if (i == current) {
-						br = document.createElement('br');
-						br.id = 'b'+i;
+            br = document.createElement('br');
+            br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
             button = document.createElement('button');
             button.style = 'border:none;background-color:black;color:yellow;font-family:monospace'
@@ -227,14 +244,23 @@
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
             p.innerHTML = '#'
-						p.id = 'p'+i;
-            document.getElementById('list').appendChild(p);
-            document.getElementById('list').appendChild(button);
+            p.id = 'p' + i;
+            ipin = document.createElement('button');
+            ipin.id = 'p' + i;
+            ipin.innerHTML = pinned.includes(String(i)) ? ' | Unpin' : ' | Pin'
+            ipin.onclick = function() {
+              pin(this.id.slice(1, this.id.length));
+            }
+						append = pinned.includes(String(i)) ? 'pin' : 'list';
+            document.getElementById(append).appendChild(p);
+            document.getElementById(append).appendChild(button);
+            document.getElementById(append).appendChild(ipin);
+						document.getElementById(append).appendChild(br);
           } else {
             br = document.createElement('br');
-						br.id = 'b'+i;
+            br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
-						button = document.createElement('button');
+            button = document.createElement('button');
             button.style = 'border:none;background-color:black;color:white;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
@@ -243,13 +269,23 @@
             button.innerHTML = (i + 1) + ': ' + fileList[i].name + ' | ' + time(fileList[i]);
             p = document.createElement('p');
             p.innerHTML = '#'
-						p.id = 'p'+i;
-            document.getElementById('list').appendChild(p);
-            document.getElementById('list').appendChild(button);
+            p.id = 'p' + i;
+            ipin = document.createElement('button');
+            ipin.id = 'p' + i;
+            ipin.innerHTML = pinned.includes(String(i)) ? ' | Unpin' : ' | Pin'
+            ipin.onclick = function() {
+              pin(this.id.slice(1, this.id.length));
+            }
+						append = pinned.includes(String(i)) ? 'pin' : 'list';
+            document.getElementById(append).appendChild(p);
+            document.getElementById(append).appendChild(button);
+            document.getElementById(append).appendChild(ipin);
+						document.getElementById(append).appendChild(br);
           };
-					
+
         };
-				search();
+				
+        search();
         if ((current + 1) == numFiles) {
           document.getElementById('next').disabled = true;
         } else {
@@ -263,7 +299,7 @@
         document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
         document.getElementById('current').innerHTML = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
 
-        document.title = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+        document.title = (Number(current) + 1) + '/' + numFiles + ': ' + fileList[current].name;
         document.getElementById('audio').play();
         document.getElementById('pp').innerHTML = 'ǁ';
         if (current > numFiles) {
@@ -274,9 +310,16 @@
 
       function next() {
         document.getElementById('audio').src = '';
+				c = current;
         if (mix) {
+				while(c == current){
+				if (pinned.length == 0){
           current = Math.floor(Math.random() * (document.getElementById('input').files.length + 1));
-        } else {
+       }else{
+			 		current = pinned[Math.floor(Math.random() * (pinned.length))]
+			 }
+			}
+			} else {
           current += 1;
         }
         handleFiles();
@@ -305,6 +348,19 @@
           x.style.display = "block";
         } else {
           x.style.display = "none";
+        }
+      }
+      window.onkeydown = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (e.key == ' ') {
+          document.getElementById('pp').click();
+
+        } else if (e.key == 'ArrowRight') {
+          document.getElementById('next').click();
+
+        } else if (e.key == 'ArrowLeft') {
+          document.getElementById('prev').click();
         }
       }
       window.onscroll = function(ev) {

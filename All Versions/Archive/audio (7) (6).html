@@ -1,0 +1,192 @@
+<body style='background-color:black;font-family:monospace'>
+
+  <title>Player</title>
+  <br>
+  <label style='font-family:monospace;border-style:solid;border:1px;border-color:white;color:white;background-color:black;cursor:pointer'><input type='file' id='input' style='display:none' accept='audio/*' multiple>Upload File</label><br>
+  <input type='checkbox' id='check'>
+  <p style='font-family:monospace;color:white;display:inline'>Check to enable scroll toggle.
+  </p><br>
+  <input type='checkbox' id='loop'>
+  <p style='font-family:monospace;color:white;display:inline'>Check to loop, not checked autoplay.
+  </p><br>
+  <input type='checkbox' id='stop'>
+  <p style='font-family:monospace;color:white;display:inline'>Check to stop loop/autoplay.
+  </p><br>
+  <audio src='' id='audio' onended='nextup()'></audio>
+
+  <button onclick='toggle()' id='pp' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>&#9658;</button>
+  <input id='s' style='-webkit-appearance: none;width: calc(100% - var(--player-button-width));height: .5em;background-color:grey;' type="range" class="timeline" max="100" value="0">
+  <span style='color:white'> | Vol:</span><input id='v' style='-webkit-appearance: none;width: calc(100% - var(--player-button-width));height: .5em;background-color:grey;' type="range" class="timeline" max="100" value="100">
+  <p id='time' style='font-family:monospace;color:white;display:inline'>
+
+  </p>
+  <br>
+
+  <button onclick='prev()' id='prev' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>&#60;--</button>
+  <button onclick='skip(-15)' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>&#60;</button>
+  <p id='current' style='color:white;display:inline;'>
+
+  </p>
+  <button onclick='skip(5)' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>&#62;</button>
+  <button onclick='next()' id='next' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>--&#62;</button>
+<br>
+<input value='1.0' id='speedInpt' style='font-family:monospace;border:none;width:50px;height:20px'><button onclick='document.getElementById("audio").playbackRate=document.getElementById("speedInpt").value' style='background-color:black;bordor-color:white;color:white;font-family:monospace' >
+Set Speed
+</button>
+  <p id='list' style='color:white;font-family:monospace'>
+
+  </p>
+  <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br>
+   <br><br><br><br><br><br>
+  <script>
+    const inputElement = document.getElementById("input");
+    inputElement.addEventListener("change", handleFile, false);
+    current = 0;
+		
+    function handleFile() {
+      current = 0;
+      handleFiles();
+    }
+    function nextup(){
+    if(document.getElementById('loop').checked&&(!document.getElementById('stop').checked)){
+    handleFiles();
+    }else{
+    if((!document.getElementById('stop').checked)){
+     next()
+    }else{
+    document.getElementById('audio').pause();
+    document.getElementById('pp').innerHTML = '&#9658';
+    }
+   
+    }
+    };
+		
+    function toggle() {
+      if (document.getElementById('audio').paused) {
+        if(document.getElementById('audio').currentTime==document.getElementById('audio').duration&&document.getElementById('stop').checked){
+        document.getElementById('audio').currentTime=0;
+        }
+        document.getElementById('audio').play();
+        document.getElementById('pp').innerHTML = 'ǁ';
+        
+      } else {
+        document.getElementById('audio').pause();
+        document.getElementById('pp').innerHTML = '&#9658';
+      }
+    };
+
+    function change() {
+      const per = (100 * document.getElementById('audio').currentTime) / document.getElementById('audio').duration;
+      document.getElementById('s').style.backgroundSize = `${per}% 100%`;
+      document.getElementById('s').value = per;
+      document.getElementById('time').innerHTML = '| '+Math.floor(document.getElementById('audio').currentTime) + '/' + Math.floor(document.getElementById('audio').duration) + 'sec | ' + Math.floor(per) + '% | ' + Math.floor(Math.floor(document.getElementById('audio').duration / 60)) + 'min, ' + Math.floor(document.getElementById('audio').duration % 60) + 'sec';
+    	document.getElementById('audio').volume=document.getElementById('v').value/100;
+    }
+
+    document.getElementById('audio').ontimeupdate = change;
+
+    function changeSeek() {
+      const time = (document.getElementById('s').value * document.getElementById('audio').duration) / 100;
+      document.getElementById('audio').currentTime = time;
+    }
+
+    function skip(a) {
+      document.getElementById('audio').currentTime = document.getElementById('audio').currentTime + a;
+    };
+    document.getElementById('s').addEventListener('change', changeSeek);
+		function test(e){
+    current=e;
+    handleFiles();
+    };
+    function time(f){
+        var _size = f.size;
+            var fSExt = new Array('Bytes', 'KB', 'MB', 'GB'),
+            i=0;
+            while(_size>900){_size/=1024;i++;}
+            var exactSize = (Math.round(_size*100)/100)+' '+fSExt[i];
+            return exactSize;
+    }
+    function handleFiles() {
+
+      const fileList = document.getElementById('input').files;
+      const numFiles = fileList.length;
+      document.getElementById('list').innerHTML = '';
+      for (i = 0; i < numFiles; i++) {
+        if (i == current) {
+          document.getElementById('list').innerHTML += '<br>#<button style="border:none;background-color:black;color:yellow;font-family:monospace" onclick="test('+i+')">' + (i+1) + ': ' + fileList[i].name + ' | '+time(fileList[i])+'</button>';
+        } else {
+          document.getElementById('list').innerHTML += '<br>#<button style="border:none;background-color:black;color:white;font-family:monospace" onclick="test('+i+')">' + (i+1) + ': ' + fileList[i].name+' | '+time(fileList[i])+'</button>';
+        };
+      };
+      if ((current + 1) == numFiles) {
+        document.getElementById('next').disabled = true;
+      } else {
+        document.getElementById('next').disabled = false;
+      };
+      if (current == 0) {
+        document.getElementById('prev').disabled = true;
+      } else {
+        document.getElementById('prev').disabled = false;
+      };
+      document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
+      document.getElementById('current').innerHTML = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+
+      document.title = current + 1 + '/' + numFiles + ': ' + fileList[current].name;
+      document.getElementById('audio').play();
+      document.getElementById('pp').innerHTML = 'ǁ';
+      if (current > numFiles) {
+        current = 0;
+        handleFiles()
+      }
+    }
+
+    function next() {
+      document.getElementById('audio').src = '';
+      current += 1;
+      handleFiles();
+    }
+
+    function prev() {
+      document.getElementById('audio').src = '';
+      current -= 1;
+      handleFiles();
+    }
+    
+
+    window.addEventListener("keypress", function(event) {
+      if (event.key === "LeftArrow") {
+        event.preventDefault();
+        document.getElementById("myBtn").click();
+      }
+    });
+    
+
+    window.addEventListener("keypress", function(event) {
+      if (event.key === "RightArrow") {
+        event.preventDefault();
+        document.getElementById("myBtn").click();
+      }
+    });
+    window.onscroll = function(ev) {
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if (document.getElementById('check').checked) {
+          if (document.getElementById('audio').paused) {
+            document.getElementById('audio').play();
+            document.getElementById('pp').innerHTML = 'ǁ';
+
+          } else {
+            document.getElementById('audio').pause();
+            document.getElementById('pp').innerHTML = '&#9658';
+
+
+          }
+          window.scrollTo(0, 0);
+          window.scrollTo(0, 0);
+          window.scrollTo(0, 0);
+          window.scrollTo(0, 0);
+        }
+      }
+    };
+
+  </script>
+</body>

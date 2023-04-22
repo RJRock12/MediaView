@@ -1,0 +1,86 @@
+<body style='background-color:black;font-family:monospace'>
+
+<title>Player</title>
+  <p style='color:white;font-family:monospace'>
+
+    Choose file to play: </p><br><br><input type='file' id='input' multiple><br>
+  <input type='checkbox' id='check'>
+  <audio controls src='' id='audio'></audio><br>
+  <button onclick='prev()' id='prev' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>&#60;</button>
+      <p id='current' style='color:white;display:inline;'>
+      </p>
+      <button onclick='next()' id='next' style='background-color:black;bordor-color:white;color:white;font-family:monospace'>&#62;</button>
+      <p id='list' style='color:white;font-family:monospace'>
+
+  </p>
+  <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br> <br><br><br><br><br><br>
+      <script>
+        const inputElement = document.getElementById("input");
+        inputElement.addEventListener("change", handleFiles, false);
+        current = 0;
+
+        function handleFiles() {
+
+          const fileList = document.getElementById('input').files;
+          const numFiles = fileList.length;
+          document.getElementById('list').innerHTML='';
+					for(i=0;i<numFiles;i++){
+          document.getElementById('list').innerHTML+='<br>#'+i+': '+fileList[i].name;
+          };
+          if ((current + 1) == numFiles) {
+            document.getElementById('next').disabled = true;
+          } else {
+            document.getElementById('next').disabled = false;
+          };
+          if (current == 0) {
+            document.getElementById('prev').disabled = true;
+          } else {
+            document.getElementById('prev').disabled = false;
+          };
+          document.getElementById('audio').src = window.URL.createObjectURL(fileList[current]);
+        document.getElementById('current').innerHTML=current+1+'/'+numFiles+': '+fileList[current].name;
+        
+        document.title=current+1+'/'+numFiles+': '+fileList[current].name;
+        }
+
+        function next() {
+          document.getElementById('audio').src = '';
+          current += 1;
+          handleFiles();
+        }
+
+        function prev() {
+          document.getElementById('audio').src = '';
+          current -= 1;
+          handleFiles();
+        }
+var input = document.getElementById("prev");
+
+input.addEventListener("keypress", function(event) {
+  if (event.key === "LeftArrow") {
+    event.preventDefault();
+    document.getElementById("myBtn").click();
+  }
+});
+var input = document.getElementById("next");
+
+input.addEventListener("keypress", function(event) {
+  if (event.key === "RightArrow") {
+    event.preventDefault();
+    document.getElementById("myBtn").click();
+  }
+});
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        if(document.getElementById('check').checked){
+        if(document.getElementById('audio').paused){
+        document.getElementById('audio').play();
+        }else{
+            document.getElementById('audio').pause();
+            }
+        window.scrollTo(0,0);
+        }
+    }
+};
+      </script>
+</body>

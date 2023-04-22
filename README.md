@@ -1,5 +1,5 @@
 # MediaView
-Minimalistic, robust media player using HTML, JS, and CSS. Compatible with all common types of audio and video files. Works with bluetooth headphones and other audio devices.
+Minimalistic, robust media player using purely web based programming languages. Compatible with all common types of audio and video files. Works with bluetooth headphones and other audio devices.
 <br>View the <a href="https://github.com/RJRock12/MediaView/wiki">Wiki page</a> for more details.<br>
 **Credit to <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> for most of the code.**<br>
 <br>

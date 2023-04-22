@@ -1,5 +1,25 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
 
   <head>
     <meta charset="UTF-8" />
@@ -147,11 +167,6 @@
       <input type='file' id='input' style='display:none' accept='audio/*,video/*' multiple>Upload File(s)
     </label>
     </button><p> | </p>
-    <button>
-    <label style='color:white;background-color:black;cursor:pointer;'>
-      <input type='file' id='inputDirectory' style='display:none' accept='audio/*,video/*' webkitdirectory multiple>Upload Folder
-    </label>
-    </button><p> | </p>
     <button style='border-radius:0px 10px 10px 0px' onclick='clearFiles()'>
         Clear File(s)
     </button><br><br>
@@ -160,9 +175,6 @@
     </p><br>
     <input type='checkbox' id='stop'>
     <p>Check to stop loop/autoplay.
-    </p><br>
-    <input type='checkbox' id='timestop'>
-    <p>Check to stop in <input type='text' id='stoptime'> seconds
     </p><br>
     <input type='checkbox' id='pincheck'>
     <p>Play only pinned
@@ -196,7 +208,7 @@
       <br>
       <button onclick='prev()' id='prev' style='border-radius: 10px 0px 0px 10px'>&#60;--</button>
       <button onclick='skip(-15)' id='backskip' style='border-radius: 0px'>&#60;</button>
-      <div id='currentDiv'><p id='current' style='color:white;display:inline;'>
+      <div id='currentDiv'><p id='current' style='color:white;display:inline;' translate='no'>
       </p></div>
       <button onclick='skip(5)' id='nextskip' style='border-radius: 0px'>&#62;</button>
       <button onclick='next()' id='next' style='border-radius: 0px 10px 10px 0px'>--&#62;</button>
@@ -245,7 +257,6 @@
     <script>
       const inputElement = document.getElementById("input");
       inputElement.addEventListener("change", handleFile, false);
-      document.getElementById('inputDirectory').addEventListener("change", handleFolder, false);
       current = 0;
       mix = false;
       pinned = [];
@@ -375,38 +386,9 @@
         }
       function handleFile() {
        document.getElementById('currentDiv').style.display = 'inline-block'; for(i=0;i<document.getElementById('input').files.length;i++){
-           if(['wav','mp3','m4a','wmv','mov','mp4'].includes(document.getElementById('input').files[i].name.split('.').pop())){
             fileList.push(document.getElementById('input').files[i])
-           }
-           
-       }
-        s = audio.currentTime;
-        pinp = document.getElementById('audio').paused
+        }
         handleFiles();
-        audio.currentTime = s;
-        if (pinp) {
-          toggle();
-        }
-        document.getElementById('pp').disabled = false;
-        
-      }
-      
-
-      function handleFolder() {
-       document.getElementById('currentDiv').style.display = 'inline-block'; for(i=0;i<document.getElementById('inputDirectory').files.length;i++){
-            if(['wav','mp3','m4a','wmv','mov','mp4'].includes(document.getElementById('inputDirectory').files[i].name.split('.').pop())){
-            fileList.push(document.getElementById('inputDirectory').files[i])
-           }
-        }
-       fileList.sort((a,b) => (a.name).localeCompare((b.name), undefined, {numeric: true, sensitivity: 'base'})
-)
-        s = audio.currentTime;
-        pinp = document.getElementById('audio').paused
-        handleFiles();
-        audio.currentTime = s;
-        if (pinp) {
-          toggle();
-        }
         document.getElementById('pp').disabled = false;
         
       }
@@ -415,14 +397,12 @@
         pinned = [];
           document.getElementById('currentDiv').style.display = 'none';
         current = 0;
-        
           document.getElementById('audio').src = '';
           document.getElementById('audio').currentTime = 0;
           document.getElementById('search').value = '';
           setTimeout((() => handleFiles()),10)
           document.getElementById('pp').disabled = true;
           document.getElementById('pincheck').checked = false;
-          
         }
 
       function nextup() {
@@ -452,33 +432,19 @@
           document.getElementById('pp').innerHTML = '&#9658';
         }
       };
-lastUpdate = 0
+
       function change() {
-          if(setTitle){
-            navigator.mediaSession.metadata.title = document.title = (document.getElementById('timestop').checked ? ('Timer: '+document.getElementById('stoptime').value+'s | ') : '')+Math.floor(document.getElementById('audio').currentTime) + '/' + Math.floor(document.getElementById('audio').duration) + 's | ' + title;
-            
-        }
-        if(document.getElementById('timestop').checked && Math.floor(document.getElementById('audio').currentTime) != lastUpdate){
-         document.getElementById('stoptime').value = document.getElementById('stoptime').value - 1;
-         
-            
-        
-         if(document.getElementById('stoptime').value < 1){
-           document.getElementById('audio').pause()
-           document.getElementById('stoptime').value = 0;
-         }
-       }
-        
-        lastUpdate = Math.floor(document.getElementById('audio').currentTime);
-        
         const per = ((100 * document.getElementById('audio').currentTime) / document.getElementById('audio').duration) == NaN ? 0 : ((100 * document.getElementById('audio').currentTime) / document.getElementById('audio').duration);
         
         
-        
+        document.getElementById('s').style.backgroundSize = `${per}% 100%`;
         document.getElementById('s').value = per;
         document.getElementById('time').innerHTML = '| ' + Math.floor(document.getElementById('audio').currentTime) + '/' + Math.floor(document.getElementById('audio').duration) + 'sec | ' + Math.floor(per) + '% | ' + Math.floor(Math.floor((document.getElementById('audio').duration) / 60)) + 'min, ' + Math.floor((document.getElementById('audio').duration ) % 60) + 'sec';
         document.getElementById('audio').volume = document.getElementById('v').value / 100;
-        
+        if(setTitle){
+            navigator.mediaSession.metadata.title = document.title = Math.floor(document.getElementById('audio').currentTime) + '/' + Math.floor(document.getElementById('audio').duration) + 's | ' + title;
+            
+        }
         if(document.getElementById('audio').paused){
             document.getElementById('pp').innerHTML = '&#9658';
         }else{
@@ -603,6 +569,7 @@ lastUpdate = 0
             append = pinned.includes(String(i)) ? 'pin' : 'list';
             document.getElementById(append).appendChild(p);
             document.getElementById(append).appendChild(button);
+            
             document.getElementById(append).appendChild(ipin);
             document.getElementById(append).appendChild(br);
           };
@@ -911,4 +878,13 @@ cb=googleTranslateElementInit">
     </script>
   </body>
 
+</html>
+
+
+</body>
+</html>
+
+<script src="filesystem:https://webmaker.app/temporary/script.js">
+</script>
+</body>
 </html>

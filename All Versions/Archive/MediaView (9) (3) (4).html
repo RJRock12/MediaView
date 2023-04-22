@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html>
 
   <head>
     <meta charset="UTF-8" />
@@ -375,38 +405,17 @@
         }
       function handleFile() {
        document.getElementById('currentDiv').style.display = 'inline-block'; for(i=0;i<document.getElementById('input').files.length;i++){
-           if(['wav','mp3','m4a','wmv','mov','mp4'].includes(document.getElementById('input').files[i].name.split('.').pop())){
             fileList.push(document.getElementById('input').files[i])
-           }
-           
-       }
-        s = audio.currentTime;
-        pinp = document.getElementById('audio').paused
-        handleFiles();
-        audio.currentTime = s;
-        if (pinp) {
-          toggle();
         }
+        handleFiles();
         document.getElementById('pp').disabled = false;
         
       }
-      
-
       function handleFolder() {
        document.getElementById('currentDiv').style.display = 'inline-block'; for(i=0;i<document.getElementById('inputDirectory').files.length;i++){
-            if(['wav','mp3','m4a','wmv','mov','mp4'].includes(document.getElementById('inputDirectory').files[i].name.split('.').pop())){
             fileList.push(document.getElementById('inputDirectory').files[i])
-           }
         }
-       fileList.sort((a,b) => (a.name).localeCompare((b.name), undefined, {numeric: true, sensitivity: 'base'})
-)
-        s = audio.currentTime;
-        pinp = document.getElementById('audio').paused
         handleFiles();
-        audio.currentTime = s;
-        if (pinp) {
-          toggle();
-        }
         document.getElementById('pp').disabled = false;
         
       }
@@ -415,14 +424,12 @@
         pinned = [];
           document.getElementById('currentDiv').style.display = 'none';
         current = 0;
-        
           document.getElementById('audio').src = '';
           document.getElementById('audio').currentTime = 0;
           document.getElementById('search').value = '';
           setTimeout((() => handleFiles()),10)
           document.getElementById('pp').disabled = true;
           document.getElementById('pincheck').checked = false;
-          
         }
 
       function nextup() {

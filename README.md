@@ -6,7 +6,7 @@ Minimalistic, robust media player using purely web based programming languages. 
 Please use a modern browser with HTML 5 support for all features to work intended.<br>
 <br><br>
 TODO: <br>
-- shortcut alt+space -> alt+q
+- shortcut alt+space -> alt+q<br>
 <br><br>
 CHANGELOG:<br>
 <br>

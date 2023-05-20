@@ -10,8 +10,8 @@ assignees: ''
 
 ##Problem
 
-state problem here.
+State problem here.
 
 ##Possible Solution
 
-state possible solution(s) here.
+State possible solution(s) here.

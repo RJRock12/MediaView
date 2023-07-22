@@ -4,6 +4,8 @@ Minimalistic, robust media player using purely web based programming languages. 
 **Credit to <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> for most of the code.**<br>
 <br>
 Please use a modern browser with HTML5 support for all features to work intended.<br>
+<br>
+**MediaView is currently NOT under active development.** Feedback can still be sent.
 <br><br>
 ## TODO: <br>
 - Shortcut [alt+space] --> [alt+q]<br>

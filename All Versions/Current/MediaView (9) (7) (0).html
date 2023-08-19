@@ -86,33 +86,7 @@
           color:yellow;
       }
 
-      button {
-        background-color: black;
-        color: white;
-        font-family: monospace;
-        border-color: grey !important;
-        border: solid 1px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition-timing-function: ease-out;
-        transition: all 0.5s;
-        font-size:14px!important;
-      }
-      button:hover {
-          color:grey;
-          border: solid 1px !important;
-          border-color: yellow !important;
-          font-size:14px!important;
-      }
-      button:focus:hover{
-          color:black !important;
-          background-color:white;
-          font-size:14px!important;
-      }
-      button:disabled {
-        color:grey !important;
-        border-color:grey !important;
-      }
+      
       body {
         font-family: monospace;
       }
@@ -165,6 +139,34 @@
 				border-color:black;
 				padding: 10px;
 			}
+      button {
+        box-sizing:border-box;
+        background-color: black;
+        color: white;
+        font-family: monospace;
+        border-color: grey;
+        border: solid 1px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition-timing-function: ease-out;
+        transition: all 0.5s;
+        font-size:14px!important;
+      }
+      button:hover {
+          color:grey;
+          border: solid 1px !important;
+          border-color: yellow !important;
+          font-size:14px!important;
+      }
+      button:focus:hover{
+          color:black !important;
+          background-color:white;
+          font-size:14px!important;
+      }
+      button:disabled {
+        color:grey !important;
+        outline-color:grey !important;
+      }
     </style>
   </head>
 
@@ -204,6 +206,10 @@
     <input type='checkbox' id='pincheck'>
     <p>Play only pinned (alt+p)
     </p><br>
+    <!-- note to self: tomarrow make the favicon toggle. The favicon is currently the mp3 tag of the song. add checkbox functionality-->
+    <input type='checkbox' id='favicon' onchange = 'favicon()'>
+    <p>Use mp3 image as favicon
+    </p><br>
     <input type='checkbox' id='gCheck'>
     <p>Translate (Powered By Google)
     </p><br>
@@ -222,11 +228,12 @@
 				<image src='' id='backgroundImg' style='width:auto;height:480px;display:absolute;z-index:0;filter: blur(20px) brightness(50%);position:absolute;left:0px'></image>
     <image src = '' id='img'>
     </image><br>
-    <p id='extraText' style='display:block;height:15px;overflow:hidden;'>
+    <p id='extraText' style='font-size:10px;display:block;height:45px;overflow:hidden;text-overflow: ellipsis;word-wrap: break-word;'>
     </p>
+    <canvas id="canvas" style="display:block;position:absolute;top:190px;left:0px;filter: blur(3px) opacity(0.3);border-radius:15px;overflow: hidden;"></canvas>
+    
 			</div>
-      
-      <canvas id="canvas" style="display:block;position:absolute;top:380px;left:10px;filter: blur(3px) opacity(0.3);border-radius:15px;overflow: hidden;"></canvas>
+      <br>
     </div>
     <br>
     <div id='sticky'>
@@ -671,7 +678,7 @@ lastUpdate = 0
             br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
             button = document.createElement('button');
-            button.style = 'border:none;background-color:black;color:yellow;font-family:monospace'
+            button.style = 'border-color:black;background-color:black;color:yellow;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
               test(this.id.splice(1, this.id.length))
@@ -683,7 +690,7 @@ lastUpdate = 0
             //p.style = 'font-size:14px!important'
             ipin = document.createElement('button');
             ipin.id = 'i' + i;
-            ipin.style = 'border:none;background-color:black;color:grey;font-family:monospace'
+            ipin.style = 'border-color:black;background-color:black;color:grey;font-family:monospace'
             ipin.innerHTML = pinned.includes(String(i)) ? ' | Unpin' : ' | Pin'
             ipin.onclick = function() {
               pin(this.id.slice(1, this.id.length));
@@ -698,7 +705,7 @@ lastUpdate = 0
             br.id = 'b' + i;
             document.getElementById('list').appendChild(br);
             button = document.createElement('button');
-            button.style = 'border:none;background-color:black;color:white;font-family:monospace'
+            button.style = 'border-color:black;background-color:black;color:white;font-family:monospace'
             button.id = 'l' + i;
             button.onclick = function() {
               test(this.id.slice(1, this.id.length))
@@ -710,7 +717,7 @@ lastUpdate = 0
             //p.style = 'font-size:14px!important'
             ipin = document.createElement('button');
             ipin.id = 'i' + i;
-            ipin.style = 'border:none;background-color:black;color:grey;font-family:monospace'
+            ipin.style = 'border-color:black;background-color:black;color:grey;font-family:monospace'
             ipin.innerHTML = pinned.includes(String(i)) ? ' | Unpin' : ' | Pin'
             ipin.onclick = function() {
               pin(this.id.slice(1, this.id.length));
@@ -776,7 +783,19 @@ lastUpdate = 0
 			art = `data:${format};base64,${window.btoa(base64String)}`
        document.getElementById('extraText').innerHTML = 'Artist: ' + tag.tags.artist + '<br>Album: ' + tag.tags.album;
        document.getElementById('backgroundImg').src = `data:${format};base64,${window.btoa(base64String)}`
-			 
+			 var link = document.querySelector("link[rel~='icon']");
+       if (!link) {
+                  link = document.createElement('link');
+                  link.rel = 'icon';
+                  document.head.appendChild(link);
+                }
+                if (document.getElementById('favicon').checked) {
+                  link.href = `data:${format};base64,${window.btoa(base64String)}`;
+
+                }
+               
+
+
        navigator.mediaSession.metadata = new MediaMetadata({
            title: document.title,
            artist: tag.tags.artist,
@@ -1073,6 +1092,31 @@ audio = document.getElementById('audio')
             ctx1.fillRect(bar_pos, canvas.height, bar_width, bar_height);
           }
         }
+
+  var link = document.querySelector("link[rel~='icon']");
+  if (!link) {
+    link = document.createElement('link');
+    link.rel = 'icon';
+    document.head.appendChild(link);
+  }
+  link.href = 'data:jpg,base64,'
+        function favicon(){
+          if (!document.getElementById('favicon').checked) {
+            var link = document.querySelector("link[rel~='icon']");
+            if (!link) {
+              link = document.createElement('link');
+              link.rel = 'icon';
+              document.head.appendChild(link);
+            }
+            link.href = 'data:jpg,base64,'
+          }
+        }
+
+
+
+
+
+
 
 
         var $jscomp=$jscomp||{};$jscomp.scope={};$jscomp.ASSUME_ES5=!1;$jscomp.ASSUME_NO_NATIVE_MAP=!1;$jscomp.ASSUME_NO_NATIVE_SET=!1;$jscomp.defineProperty=$jscomp.ASSUME_ES5||"function"==typeof Object.defineProperties?Object.defineProperty:function(v,h,p){v!=Array.prototype&&v!=Object.prototype&&(v[h]=p.value)};$jscomp.getGlobal=function(v){return"undefined"!=typeof window&&window===v?v:"undefined"!=typeof global&&null!=global?global:v};$jscomp.global=$jscomp.getGlobal(this);

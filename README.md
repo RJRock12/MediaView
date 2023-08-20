@@ -13,7 +13,7 @@ Please use a modern browser with HTML5 support for all features to work intended
 ## CHANGELOG:<br>
 <br>
 <b>Note: All versions as far back as 1.1 are included in the archive, but are not listed here. Versions before 8.6 may be unstable or broken altogether.</b><br><br>
-V 9.7.3: (tested, fully stable) Fixed mp3 tag image placing issues, added mp3 as favicon<br>
+V 9.7.3: (tested, fully stable) Fixed mp3 tag image placing issues, added mp3 as favicon, fixed visualizer<br>
 V 9.7.2: (tested, mostly stable) Fixed the bug where when playing video, a large space exists. <br>
 V 9.7.1: (tested, fully stable) Fixed 2 bugs and 1 performance bug.<br>
 V 9.7.0: (tested, mostly stable) Added wave display for visuals.<br>

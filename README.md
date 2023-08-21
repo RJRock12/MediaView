@@ -7,8 +7,7 @@ Please use a modern browser with HTML5 support for all features to work intended
 <br>
 **MediaView is NOT currently under active development, but will be returning to development in a few weeks. Minor updates may still roll out.** Feedback can still be sent.
 <br><br>
-## TODO: <br>
-- Shortcut [alt+space] --> [alt+q] (ON HOLD)<br>
+
 <br><br>
 ## CHANGELOG:<br>
 <br>

@@ -323,7 +323,15 @@ function delList(){
 localStorage.pinlists = JSON.stringify(pinlist);
 populatePinlists();  
 }
-}
+} 
+function setSelectVal(selectObj, valueToSet) {
+    for (var i = 0; i < selectObj.options.length; i++) {
+      if (selectObj.options[i].text == valueToSet) {
+        selectObj.options[i].selected = true;
+        return;
+      }
+    }
+  }
 
 function populatePinlists(){
   if (localStorage.pinlists != '') {
@@ -381,7 +389,9 @@ function updatePins(){
   pinlist[1][pinlist[0].indexOf(document.getElementById('pinlists').value)] = toPins;
   localStorage.pinlists = JSON.stringify(pinlist)
   populatePinlists();
+  document.getElementById('pinlists').value = nameBefore
   document.querySelector('option[value=' + nameBefore + ']').selected = true
+setSelectVal(document.getElementById('pinlists'),nameBefore)
 }
 
 

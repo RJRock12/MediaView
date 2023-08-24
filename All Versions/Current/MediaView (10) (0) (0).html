@@ -342,6 +342,10 @@ function pinlistsChange(){
   if(document.getElementById('pinlists').value == 'none') return;
     if(document.getElementById('pinlists').value == 'new'){
       a = prompt('New Pinlist Name');
+      if(pinlist[0].includes(a)){
+        alert('Sorry, name already taken. Try again')
+      return;
+      };
       pinlist[0].push(a);
       pinlist[1].push([]);
       localStorage.pinlists = JSON.stringify(pinlist);
@@ -373,9 +377,11 @@ function updatePins(){
     
     toPins.push(fileList[i].name)
   }
+  nameBefore = document.getElementById('pinlists').value
   pinlist[1][pinlist[0].indexOf(document.getElementById('pinlists').value)] = toPins;
   localStorage.pinlists = JSON.stringify(pinlist)
   populatePinlists();
+  document.querySelector('option[value=' + nameBefore + ']').selected = true
 }
 
 

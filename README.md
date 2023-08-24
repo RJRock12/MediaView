@@ -8,7 +8,7 @@ Please use a modern browser with HTML5 support for all features to work intended
 **MediaView is NOT currently under active development, but will be returning to development in a few weeks. Minor updates may still roll out.** Feedback can still be sent.
 <br><br>
 ## TO DO:<br>
-- Add pin list naming and local storage
+
 <br><br>
 ## CHANGELOG:<br>
 <br>

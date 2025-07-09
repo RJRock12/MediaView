@@ -3,7 +3,7 @@ Minimalistic, robust media player using purely web based programming languages. 
 <br><br>View the <a href="https://github.com/RJRock12/MediaView/wiki">Wiki page</a> for more details.<br>
 **Credit to <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> for most of the code.**<br>
 <br>
-Please use a modern browser with HTML5 support for all features to work intended.<br>
+Please use a modern browser with HTML5 support for all features to work as intended.<br>
 <br>
 ## TO DO:<br>
 

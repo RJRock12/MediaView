@@ -2,7 +2,7 @@
 Minimalistic, robust media player using purely web based programming languages. Compatible with all common types of audio and video files. Works with bluetooth headphones and other audio devices.
 <br>
 ![Version 10.0.0](https://img.shields.io/badge/Version-10.0.0-brightgreen%20?style=flat) <br>
-<object alt="CC BY-NC-SA License" data="https://img.shields.io/badge/License-CC-brightgreen%20?style=flat&link=https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby-nc-sa%2F4.0%2F"><br>
+<object alt="CC BY-NC-SA License" data="https://img.shields.io/badge/License-CC-brightgreen%20?style=flat&link=https%3A%2F%2Fcreativecommons.org%2Flicenses%2Fby-nc-sa%2F4.0%2F"></object><br>
 <br><br>View the <a href="https://github.com/RJRock12/MediaView/wiki">Wiki page</a> for more details.<br><br>
 Please use a modern browser with HTML5 support for all features to work as intended.<br>
 <br>

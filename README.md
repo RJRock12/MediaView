@@ -7,11 +7,11 @@ Please use a modern browser with HTML5 support for all features to work as inten
 - <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> (Programming and Testing)
 - <a href="https://github.com/RJRock12">@RJRock12</a> (Proof-of-Concept, Testing, Repo Management)<br>
 <br>
-## TO DO:
+<b>TO DO:</b>
 <br>
 <b>Development for MediaView is currently halted.</b>
 <br><br><br>
-## CHANGELOG:
+<b>CHANGELOG:</b>
 <br>
 <br>
 <b>Note: All versions as far back as 1.1 are included in the archive, but are not listed here. Versions before 8.6 may be unstable or broken altogether.</b><br><br>

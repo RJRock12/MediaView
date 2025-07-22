@@ -1,16 +1,19 @@
 # MediaView
 Minimalistic, robust media player using purely web based programming languages. Compatible with all common types of audio and video files. Works with bluetooth headphones and other audio devices.
 <br><br>View the <a href="https://github.com/RJRock12/MediaView/wiki">Wiki page</a> for more details.<br><br>
+<br>
+Please use a modern browser with HTML5 support for all features to work as intended.<br>
+<br>
 **Developers**
 - <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> (Programming and Testing)
 - <a href="https://github.com/RJRock12">@RJRock12</a> (Proof-of-Concept, Testing, Repo Management)<br>
 <br>
-Please use a modern browser with HTML5 support for all features to work as intended.<br>
+## TO DO:
 <br>
-## TO DO:<br>
 - Development for MediaView is currently halted.
 <br><br>
-## CHANGELOG:<br>
+## CHANGELOG:
+<br>
 <br>
 <b>Note: All versions as far back as 1.1 are included in the archive, but are not listed here. Versions before 8.6 may be unstable or broken altogether.</b><br><br>
 V 10.0.0: (tested, fully stable) Yay! The new version has a new localstorage based pinlist system! Easier to use!<br>

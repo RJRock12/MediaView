@@ -11,7 +11,7 @@ Please use a modern browser with HTML5 support for all features to work as inten
 <br>
 <b>Development for MediaView is currently halted.</b>
 <br><br><br>
-<b>CHANGELOG:</b>
+<b>CHANGELOG</b><hr>
 <br>
 <b>Note: All versions as far back as 1.1 are included in the archive, but are not listed here. Versions before 8.6 may be unstable or broken altogether.</b><br><br>
 V 10.0.0: (tested, fully stable) Yay! The new version has a new localstorage based pinlist system! Easier to use!<br>

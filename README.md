@@ -6,7 +6,7 @@ Please use a modern browser with HTML5 support for all features to work as inten
 **Developers**
 - <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> (Programming and Testing)
 - <a href="https://github.com/RJRock12">@RJRock12</a> (Proof-of-Concept, Testing, Repo Management)<br>
-<br>
+<hr>
 <b>TO DO:</b>
 <br>
 <b>Development for MediaView is currently halted.</b>

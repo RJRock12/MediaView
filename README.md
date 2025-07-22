@@ -9,7 +9,7 @@ Please use a modern browser with HTML5 support for all features to work as inten
 <br>
 ## TO DO:
 <br>
-**Development for MediaView is currently halted.**
+<b>Development for MediaView is currently halted.</b>
 <br><br><br>
 ## CHANGELOG:
 <br>

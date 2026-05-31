@@ -7,9 +7,9 @@ Please use a modern browser with HTML5 support for all features to work as inten
 # ⚠️ Development for MediaView is halted indefinitely. The project is in a stable state but will not recieve feature updates. Bug reports may or may not be ignored. 
 ### Please feel free to fork this repository, and submit an issue if you want us to consider listing your fork on this page as an official alternative. All forks must use the same license as this repository. If you wish to change the license, include it the submitted issue.
 <br><br>
-**Developers**
-- <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> (Programming and Testing)
-- <a href="https://github.com/RJRock12">@RJRock12</a> (Proof-of-Concept Programming, Testing, Repo Management)<br>
+
+## Usage
+Please use the latest version of MediaView located at <a href="https://github.com/RJRock12/MediaView/tree/main/All%20Versions/Current"><code>./All Versions/Current/MediaView (x) (x) (x).html</code></a>. Older, potentially unstable versions can be found at <a href="https://github.com/RJRock12/MediaView/tree/main/All%20Versions/Archive"><code>./All Versions/Archive</code></a>. The file can be opened on any device which supports <code>.html</code> files. If you are unable to open this file, the <a href="https://rjrock12.github.io/MediaView/">GitHub Pages site</a> can be accessed on any device with an Internet connection.
 <hr>
 <b>Roadmap:</b>
 <br>
@@ -31,3 +31,8 @@ V 9.6.4: (fully tested, confirmed stable) Added button to pop out the visuals in
 V 9.6.2: (fully tested, confirmed stable) Improved Visuals Section, made more user friendly.<br>
 V 9.5.4: Fixed bug where when using alt+d or alt-f forgets to detect unholding alt, resulting in all commands afterwards to detect as if alt was down.<br>
 V 9.5.0: (fully tested, confirmed stable) Added keyboard shortcuts for most commonly used items.<br>
+<hr>
+
+**Developers:**
+- <a href="https://github.com/michael-tiger-2010">@michael-tiger-2010</a> (Programming and Testing)
+- <a href="https://github.com/RJRock12">@RJRock12</a> (Proof-of-Concept Programming, Testing, Repo Management)
